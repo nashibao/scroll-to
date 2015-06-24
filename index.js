@@ -23,7 +23,7 @@ function scrollTo(x, y, options) {
   options = options || {};
 
   // start position
-  var start = scroll();
+  var start = scroll(options.target);
 
   // setup tween
   var tween = Tween(start)
@@ -33,7 +33,9 @@ function scrollTo(x, y, options) {
 
   // scroll
   tween.update(function(o){
-    window.scrollTo(o.left | 0, o.top | 0);
+    var target = options.target || window.document.body;
+    target.scrollTop = o.top | 0;
+    target.scrollLeft = o.left | 0;
   });
 
   // handle end
@@ -59,8 +61,9 @@ function scrollTo(x, y, options) {
  * @api private
  */
 
-function scroll() {
-  var y = window.pageYOffset || document.documentElement.scrollTop;
-  var x = window.pageXOffset || document.documentElement.scrollLeft;
+function scroll(target) {
+  target = target || window.document.body;
+  var y = target.scrollTop;
+  var x = target.scrollLeft;
   return { top: y, left: x };
 }
